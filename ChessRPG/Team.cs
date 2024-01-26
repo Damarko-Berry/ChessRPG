@@ -68,7 +68,7 @@ namespace ChessRPG
         public Team(){}
         public Team(int lvl)
         {
-            exp = lvl * 49;
+            exp = (lvl-1) * 49;
             Random random = new Random();
             King.AddExp(exp);
             Queen.AddExp(random.Next(exp));
