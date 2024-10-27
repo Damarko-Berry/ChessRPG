@@ -13,19 +13,19 @@ namespace ChessRPG
         public List<Village> Villages;
         public Kingdom() { }
         public Statistics KingdomStatistics=> new Statistics(Villages.ToArray());
-
+        public void Grow()
+        {
+            for (int i = 0; i < Villages.Count; i++)
+            {
+                Villages[i].population += (int)KingdomStatistics.AverageAbundance;
+            }
+        }
         public void Add(Village item)
         {
             Team Guard = new Team(race,KingdomStatistics);
             item.team = Guard;
-            ((ICollection<Village>)Villages).Add(item);
+            Villages.Add(item);
         }
-
-        public bool Contains(Village item)
-        {
-            return ((ICollection<Village>)Villages).Contains(item);
-        }
-
         public bool Remove(Village item)
         {
             return ((ICollection<Village>)Villages).Remove(item);
@@ -101,11 +101,21 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance TotalResources => (Abundance)RS.Mean;
-        public readonly Stat RS;
+        public readonly Abundance AverageAbundance{
+            get
+            {
+                Stat RTS = new Stat();
+                RTS.Add(Food);
+                RTS.Add(Wood);
+                RTS.Add(Metals);
+                RTS.Add(Fresh_Water);
+                return (Abundance)RTS.Mean;
+            }
+        }
+
         public Statistics(Village[] villages)
         {
-            RS = new Stat();
+
             Population = 16;
             Fresh_Water = 16;
             Wood = 16;
@@ -114,7 +124,6 @@ namespace ChessRPG
             for (int i = 0; i < villages.Length; i++)
             {
                 Population += villages[i].population;
-                RS.Add((int)villages[i].AmountAvailible);
                 switch (villages[i].resourceAvailible)
                 {
                     case Resource.Wood:
