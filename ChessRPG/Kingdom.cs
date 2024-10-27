@@ -17,13 +17,14 @@ namespace ChessRPG
         {
             for (int i = 0; i < Villages.Count; i++)
             {
-                Villages[i].population += (int)KingdomStatistics.AverageAbundance;
+                Villages[i].population += (int)KingdomStatistics.SurvivalChances;
             }
         }
         public void Add(Village item)
         {
             Team Guard = new Team(race,KingdomStatistics);
             item.team = Guard;
+            item.population = 16;
             Villages.Add(item);
         }
         public bool Remove(Village item)
@@ -101,22 +102,17 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance AverageAbundance{
-            get
-            {
-                Stat RTS = new Stat();
-                RTS.Add(Food);
-                RTS.Add(Wood);
-                RTS.Add(Metals);
-                RTS.Add(Fresh_Water);
-                return (Abundance)RTS.Mean;
-            }
-        }
+        public readonly Abundance SurvivalChances=> (Abundance)new Stat
+                {
+                    (int)Foodlvl,
+                    (int)Woodlvl,
+                    (int)Fresh_Waterlvl
+                }.Mean;
 
         public Statistics(Village[] villages)
         {
 
-            Population = 16;
+            Population = 0;
             Fresh_Water = 16;
             Wood = 16;
             Food = 16;

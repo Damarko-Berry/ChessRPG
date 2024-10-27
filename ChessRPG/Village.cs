@@ -12,9 +12,9 @@ namespace ChessRPG
         public Abundance AmountAvailible;
         public int Availible => AmountAvailible switch
         {
-            Abundance.Low => 8,
-            Abundance.Medium => 16, 
-            Abundance.High => 32,
+            Abundance.Low => 24,
+            Abundance.Medium => 32, 
+            Abundance.High => 64,
         };
         public Village() { }
     }
