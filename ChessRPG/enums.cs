@@ -34,4 +34,15 @@
         Black,
         Asian
     }
+    public enum Resource
+    {
+        Fresh_Water,
+        Wood,
+        Food,
+        Metals
+    }
+    public enum Abundance
+    {
+        Low=-1, Medium, High
+    }
 }

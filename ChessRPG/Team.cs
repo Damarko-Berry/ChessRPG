@@ -36,64 +36,58 @@ namespace ChessRPG
             }
             exp = 0;
         }
-        public Piece King = new Piece(PieceType.King);
-        public Piece Queen= new Piece(PieceType.Queen);
-        public Piece[] Bishops = new Piece[2]
+        public Piece King;
+        public Piece Queen;
+        public Piece[] Bishops = new Piece[2];
+        public Piece[] Rooks = new Piece[2];
+        public Piece[] Knights = new Piece[2];
+        public Piece[] Pawns = new Piece[8];
+        Piece[] all
         {
-            new Piece(PieceType.Bishop),
-            new Piece(PieceType.Bishop,1)
-        };
-        public Piece[] Rooks = new Piece[2]
-        {
-            new Piece(PieceType.Rook),
-            new Piece(PieceType.Rook,1)
-        };
-        public Piece[] Knights = new Piece[2]
-        {
-            new Piece(PieceType.Knight),
-            new Piece(PieceType.Knight, 1)
-        }; 
-        public Piece[] Pawns = new Piece[8]
-        {
-            new Piece(PieceType.Pawn,0),
-            new Piece(PieceType.Pawn,1),
-            new Piece(PieceType.Pawn,2),
-            new Piece(PieceType.Pawn,3),
-            new Piece(PieceType.Pawn,4),
-            new Piece(PieceType.Pawn,5),
-            new Piece(PieceType.Pawn,6),
-            new Piece(PieceType.Pawn,7),
-        };
-
-        public Team(){}
-        public Team(int lvl)
-        {
-            exp = (lvl-1) * 49;
-            Random random = new Random();
-            King.AddExp(exp);
-            Queen.AddExp(random.Next(exp));
-            for (int i = 0; i < Bishops.Length; i++)
+            get
             {
-                random = new Random();
-                Bishops[i].AddExp(random.Next(exp));
+                List<Piece> list = new List<Piece>();
+                list.Add(King);
+                list.Add(Queen);
+                list.AddRange(Bishops);
+                list.AddRange(Rooks);
+                list.AddRange(Knights);
+                list.AddRange(Pawns);
+                return list.ToArray();
             }
-            for (int i = 0; i < Rooks.Length; i++)
-            {
-                random = new Random();
-                Rooks[i].AddExp(random.Next(exp));
-            }
-            for (int i = 0; i < Knights.Length; i++)
-            {
-                random = new Random();
-                Knights[i].AddExp(random.Next(exp));
-            }
-            for (int i = 0; i < Pawns.Length; i++)
-            {
-                random = new Random();
-                Pawns[i].AddExp(random.Next(exp));
-            }
-            race = (Race)random.Next(Enum.GetNames(typeof(Race)).Length);
         }
+        public TeamStatistics Statistics => new TeamStatistics(all);
+        Team(){}
+        public Team(Race rce, Statistics statistics)
+        {
+            King = new Piece(PieceType.King,statistics);
+            Queen = new Piece(PieceType.Queen, statistics);
+            Bishops = new Piece[2]
+            {
+                new Piece(PieceType.Bishop,statistics),
+                new Piece(PieceType.Bishop,1,statistics),
+            };
+            Rooks = new Piece[2]{
+                new Piece(PieceType.Rook,statistics),
+                new Piece(PieceType.Rook,1,statistics),
+            };
+            Knights = new Piece[2]{
+                new Piece(PieceType.Knight,statistics),
+                new Piece(PieceType.Knight,1,statistics),
+            };
+            Pawns = new Piece[8]{
+                new Piece(PieceType.Pawn,statistics),
+                new Piece(PieceType.Pawn,1,statistics),
+                new Piece(PieceType.Pawn,2,statistics),
+                new Piece(PieceType.Pawn,3,statistics),
+                new Piece(PieceType.Pawn,4,statistics),
+                new Piece(PieceType.Pawn,5,statistics),
+                new Piece(PieceType.Pawn,6,statistics),
+                new Piece(PieceType.Pawn,7,statistics),
+            };
+            race = race;
+        }
+
         public Team(string path)
         {
             if (File.Exists(path))
@@ -106,6 +100,28 @@ namespace ChessRPG
                 Knights = team.Knights;
                 Pawns = team.Pawns;
             } 
+        }
+    }
+
+    public readonly struct TeamStatistics
+    {
+        public readonly Stat Str;
+        public readonly Stat Spd;
+        public readonly Stat Def;
+        public readonly Stat Lvl;
+        public TeamStatistics(Piece[] piece)
+        {
+            Str = new Stat();
+            Spd = new Stat();
+            Def = new Stat();
+            Lvl = new Stat();
+            for (int i = 0; i < piece.Length; i++)
+            {
+                Str.Add(piece[i].Str);
+                Spd.Add(piece[i].Spd);
+                Def.Add(piece[i].Def);
+                Lvl.Add(piece[i].Level);
+            }
         }
     }
 }

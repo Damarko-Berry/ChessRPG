@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ChessRPG
 {
@@ -45,11 +46,11 @@ namespace ChessRPG
         public Upgrades upgrades;
         public int atr;
         public Gender gender;
-        public int MaxHP => (BaseStr+BaseSpd)*10;
+        public int MaxHP => (BaseStr+BaseSpd)*10 + upgrades.addedHP;
         public int HP;
         public int Str => (BaseStr+upgrades.addedstr)*10;
         public int Spd => (BaseSpd+upgrades.addedspd)*10;
-        public int Def => ((Str+Spd)/2);
+        public int Def => ((Str+Spd)/2)+ upgrades.addedDef;
 
         int def;
         int GetDef(Element off)
@@ -78,22 +79,22 @@ namespace ChessRPG
                 switch (pieceType)
                 {
                     case PieceType.Pawn:
-                        val = 2;
+                        val = 1;
                         break;
                     case PieceType.Rook:
                         val = 3;
                         break;
                     case PieceType.Bishop:
-                        val = 2;
+                        val = 1;
                         break;
                     case PieceType.Knight: 
-                        val = 2;
+                        val = 3;
                         break;
                     case PieceType.Queen:
-                        val = 4;
+                        val = 3;
                         break;
                     case PieceType.King:
-                        val = 2;
+                        val = 4;
                         break;
                 }
                 return val * Level;
@@ -110,7 +111,7 @@ namespace ChessRPG
                         val = 1;
                         break;
                     case PieceType.Rook:
-                        val = 2;
+                        val = 1;
                         break;
                     case PieceType.Bishop:
                         val = 3;
@@ -119,10 +120,10 @@ namespace ChessRPG
                         val = 2;
                         break;
                     case PieceType.Queen:
-                        val = 4;
+                        val = 3;
                         break;
                     case PieceType.King:
-                        val = 2;
+                        val = 1;
                         break;
                 }
                 return val * Level;
@@ -151,7 +152,7 @@ namespace ChessRPG
             HP = MaxHP;
             element = (Element)random.Next(Enum.GetValues(typeof(Element)).Length);
         }
-        public Piece(PieceType pieceType)
+        public Piece(PieceType pieceType, Statistics statistics)
         {
             this.pieceType = pieceType;
             index = 0;
@@ -171,8 +172,9 @@ namespace ChessRPG
             {
                 gender = (Gender)random.Next(2);
             }
+            upgrades = new Upgrades(statistics);
         } 
-        public Piece(PieceType pieceType, int index)
+        public Piece(PieceType pieceType, int index, Statistics statistics)
         {
             this.pieceType = pieceType;
             this.index = index;
@@ -192,6 +194,7 @@ namespace ChessRPG
             {
                 gender = (Gender)random.Next(2);
             }
+            upgrades = new Upgrades(statistics);
         }
         public int takeAttack(Piece attacker, bool inRange)
         {
@@ -227,7 +230,7 @@ namespace ChessRPG
                 atk=0; ED=0;
                 def -= random.Next(attacker.Str);
             }
-            HP -= atk;
+            HP -= atk+ED;
             return atk+ED;
         }
         public void ResetDef() {  def = Def; }
