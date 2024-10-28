@@ -42,7 +42,7 @@ namespace ChessRPG
         public Piece[] Rooks = new Piece[2];
         public Piece[] Knights = new Piece[2];
         public Piece[] Pawns = new Piece[8];
-        Piece[] all
+        public Piece[] all
         {
             get
             {
@@ -58,8 +58,19 @@ namespace ChessRPG
         }
         public TeamStatistics Statistics => new TeamStatistics(all);
         Team(){}
+        public void Regen(Statistics statistics)
+        {
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i].HP <= 0)
+                {
+                    all[i] = new Piece(all[i].pieceType,statistics);
+                }
+            }
+        }
         public Team(Race rce, Statistics statistics)
         {
+            race = rce;
             King = new Piece(PieceType.King,statistics);
             Queen = new Piece(PieceType.Queen, statistics);
             Bishops = new Piece[2]
@@ -85,22 +96,9 @@ namespace ChessRPG
                 new Piece(PieceType.Pawn,6,statistics),
                 new Piece(PieceType.Pawn,7,statistics),
             };
-            race = race;
+            
         }
 
-        public Team(string path)
-        {
-            if (File.Exists(path))
-            {
-                var team = SaveLoad.Load<Team>(path);
-                King = team.King;
-                Queen = team.Queen;
-                Bishops = team.Bishops;
-                Rooks = team.Rooks;
-                Knights = team.Knights;
-                Pawns = team.Pawns;
-            } 
-        }
     }
 
     public readonly struct TeamStatistics

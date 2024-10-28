@@ -4,8 +4,10 @@ using System.Text;
 
 namespace ChessRPG
 {
+    [Serializable]
     public class Village
     {
+        public int id;
         public Team team = null;
         public int population;
         public Resource resourceAvailible;

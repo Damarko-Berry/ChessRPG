@@ -7,16 +7,30 @@ using System.Text;
 
 namespace ChessRPG
 {
+    [Serializable]
     public class Kingdom
     {
         public Race race;
-        public List<Village> Villages;
+        public List<Village> Villages = new List<Village>();
         public Kingdom() { }
         public Statistics KingdomStatistics=> new Statistics(Villages.ToArray());
         public void Grow()
         {
             for (int i = 0; i < Villages.Count; i++)
             {
+                Random random = new Random();
+                switch (KingdomStatistics.SurvivalChances)
+                {
+                    case Abundance.Low:
+                        Villages[i].population += random.Next(-8, 0);
+                        break;
+                    case Abundance.Medium:
+                        Villages[i].population += random.Next(-4, 4);
+                        break;
+                    case Abundance.High:
+                        Villages[i].population += random.Next(4, 8);
+                        break;
+                }
                 Villages[i].population += (int)KingdomStatistics.SurvivalChances;
             }
         }
@@ -33,7 +47,7 @@ namespace ChessRPG
         }
     }
 
-    public readonly struct Statistics
+    public struct Statistics
     {
         public readonly int Population,Fresh_Water,
         Wood,
