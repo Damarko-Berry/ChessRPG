@@ -38,10 +38,7 @@ namespace ChessRPG
         }
         public Piece King;
         public Piece Queen;
-        public Piece[] Bishops = new Piece[2];
-        public Piece[] Rooks = new Piece[2];
-        public Piece[] Knights = new Piece[2];
-        public Piece[] Pawns = new Piece[8];
+        public Piece[] Bishops,Rooks, Knights, Pawns;
         public Piece[] all
         {
             get

@@ -6,16 +6,16 @@ using System.Text;
 
 namespace ChessRPG
 {
-    public struct Stat : ICollection<double>
+    public class Stat : ICollection<double>
     {
-        private double[] Data;
+        private List<double> Data = new List<double>();
         public double Range => Data.Max() - Data.Min();
         public double Mean => Data.Average();
         public double Median
         {
             get
             {
-                Array.Sort(Data);
+                Data.Sort();
                 int size = Count;
 
                 if (size % 2 == 0)
@@ -37,7 +37,7 @@ namespace ChessRPG
                     .Select(g => g.Key)
                     .FirstOrDefault();
         public double Total => Data.Sum();
-        public int Count => Data.Length;
+        public int Count => Data.Count;
         public double Least => Data.Min();
         public double this[int index] => Data[index];
         public bool IsReadOnly => ((ICollection<double>)Data).IsReadOnly;
@@ -46,7 +46,6 @@ namespace ChessRPG
         {
             ((ICollection<double>)Data).Add(item);
         }
-
         public void Clear()
         {
             ((ICollection<double>)Data).Clear();

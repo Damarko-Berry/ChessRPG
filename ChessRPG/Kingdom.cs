@@ -49,11 +49,12 @@ namespace ChessRPG
 
     public struct Statistics
     {
-        public readonly int Population,Fresh_Water,
+        public int Population { get; private set; }
+        int Fresh_Water,
         Wood,
         Food,
         Metals;
-        public readonly Abundance Fresh_Waterlvl
+        public Abundance Fresh_Waterlvl
         {
             get
             {
@@ -68,7 +69,7 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance Woodlvl
+        public Abundance Woodlvl
         {
             get
             {
@@ -84,7 +85,7 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance Foodlvl
+        public Abundance Foodlvl
         {
             get
             {
@@ -100,7 +101,7 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance Metalslvl
+        public Abundance Metalslvl
         {
             get
             {
@@ -116,7 +117,7 @@ namespace ChessRPG
                 return Abundance.Low;
             }
         }
-        public readonly Abundance SurvivalChances=> (Abundance)new Stat
+        public Abundance SurvivalChances=> (Abundance)new Stat
                 {
                     (int)Foodlvl,
                     (int)Woodlvl,

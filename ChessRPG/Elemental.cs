@@ -24,7 +24,7 @@ namespace ChessRPG
             { Element.Water, new Elemental(Element.Fire, Element.Earth)},
             { Element.Lightning, new Elemental(Element.Earth,Element.Wind)},
             { Element.Wind, new Elemental(Element.Lightning,Element.Fire)},
-            { Element.Earth, new Elemental(Element.Lightning,Element.Water)},
+            { Element.Earth, new Elemental(Element.Water,Element.Lightning)},
         };
     }
 }

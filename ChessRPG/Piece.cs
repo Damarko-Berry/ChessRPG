@@ -10,6 +10,7 @@ namespace ChessRPG
     {
         public int Level = 1;
         public int EXP;
+        public int EXPThresh = 49;
         public int Worth
         {
             get
@@ -135,8 +136,9 @@ namespace ChessRPG
             for (int i = 0; i < amt; i++)
             {
                 EXP++;
-                if (EXP >= 49*Level)
+                if (EXP >= EXPThresh)
                 {
+                    EXPThresh *=2;
                     Level++;
                     if (Level % 3 == 0)
                     {

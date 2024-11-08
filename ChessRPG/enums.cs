@@ -30,6 +30,7 @@
     }
     public enum Race
     {
+        None =-1,
         White,
         Black,
         Asian

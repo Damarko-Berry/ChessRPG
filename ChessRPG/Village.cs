@@ -8,15 +8,15 @@ namespace ChessRPG
     public class Village
     {
         public int id;
-        public Team team = null;
+        public Team? team = null;
         public int population;
         public Resource resourceAvailible;
         public Abundance AmountAvailible;
         public int Availible => AmountAvailible switch
         {
-            Abundance.Low => 24,
-            Abundance.Medium => 32, 
-            Abundance.High => 64,
+            Abundance.Low => 32,
+            Abundance.Medium => 64, 
+            Abundance.High => 128,
         };
         public Village() { }
     }
