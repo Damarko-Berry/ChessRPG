@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ChessRPG
 {
+    [Serializable]
     internal struct Elemental
     {
         public Element Weakness, Stronger;
